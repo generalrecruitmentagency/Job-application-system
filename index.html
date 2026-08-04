@@ -933,10 +933,9 @@
         </select>
       </div>
 
-      <div class="form-group">
-        <label>បញ្ជាក់ការងារពីមុន <span class="optional">(មិនចាំបាច់បំពេញក៏បាន)</span></label>
-        <input type="text" id="otherJob" placeholder="បើជ្រើសរើស 'ផ្សេងៗ' សូមបញ្ជាក់នៅទីនេះ">
-      </div>
+      <!-- ==========================================================
+           REMOVED: បញ្ជាក់ការងារពីមុន (otherJob) - DELETED
+      ========================================================== -->
 
       <div class="form-group">
         <label>តេឡេក្រាម (Link / Username) <span class="required-star">*</span></label>
@@ -1170,17 +1169,8 @@
       }
     });
 
-    document.getElementById("previousJob").addEventListener("change", function() {
-      const otherInput = document.getElementById("otherJob");
-      if (this.value === "other") {
-        otherInput.placeholder = "សូមបញ្ជាក់ការងាររបស់អ្នក...";
-        otherInput.required = true;
-      } else {
-        otherInput.placeholder = "បើជ្រើសរើស 'ផ្សេងៗ' សូមបញ្ជាក់នៅទីនេះ";
-        otherInput.value = "";
-        otherInput.required = false;
-      }
-    });
+    // REMOVED: previousJob "other" handler since otherJob was deleted
+    // The previousJob select still works but without the "other" option triggering a separate input
 
     // ============================================================
     // WORK STATUS & EXPERIENCE
@@ -1417,7 +1407,6 @@
       document.getElementById('successMessage').style.display = 'none';
       document.getElementById('selectedJobInfo').classList.remove('show');
       document.getElementById('otherEducation').value = '';
-      document.getElementById('otherJob').value = '';
       document.getElementById('districtOtherContainer').style.display = 'none';
       document.getElementById('communeOtherContainer').style.display = 'none';
       document.getElementById('districtOther').value = '';
@@ -1462,7 +1451,6 @@
       const workStatus = document.querySelector('input[name="workStatus"]:checked')?.value || '';
       const experience = document.querySelector('input[name="experience"]:checked')?.value || '';
       const previousJob = document.getElementById('previousJob').value;
-      const otherJob = document.getElementById('otherJob').value;
       const telegram = document.getElementById('telegram').value;
       const phone = document.getElementById('phone').value;
       const description = document.getElementById('description').value;
@@ -1493,7 +1481,7 @@
       });
       
       const finalEducation = education === 'other' ? otherEducation : education;
-      const finalJob = previousJob === 'other' ? otherJob : (previousJob || 'មិនមាន');
+      const finalJob = previousJob || 'មិនមាន';
       
       const startDateObj = new Date(startDate);
       const formattedStartDate = startDateObj.toLocaleDateString('km-KH', {
@@ -1555,7 +1543,7 @@
     });
 
     // ============================================================
-    // SEND PHOTO WITH CAPTION - WITH OK BUTTON & 10 SECONDS
+    // SEND PHOTO WITH CAPTION - WITH OK BUTTON & 20 SECONDS
     // ============================================================
     function sendPhotoWithCaption(fileBase64, fileName, caption) {
       const token = '8133960195:AAGss5J-d0GXsFkfsOa3yjQ7p3yp9W5uCFs';
@@ -1607,12 +1595,12 @@
             showAlert('✅ ការដាក់ពាក្យរបស់អ្នកត្រូវបានផ្ញើដោយជោគជ័យ!', 'success');
             
             // ==========================================================
-            // AUTO CLOSE AFTER 10 SECONDS
+            // AUTO CLOSE AFTER 20 SECONDS (UPDATED FROM 10 to 20)
             // ==========================================================
             clearTimeout(window.successTimeout);
             window.successTimeout = setTimeout(() => {
               closeSuccessMessage();
-            }, 10000); // 10 seconds
+            }, 20000); // 20 seconds
             
           } else {
             showAlert('❌ មានបញ្ហាក្នុងការផ្ញើព័ត៌មាន។', 'error');
