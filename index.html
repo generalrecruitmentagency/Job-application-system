@@ -420,23 +420,36 @@
     .btn-back:hover { background: #E2E8F0; }
 
     /* ============================================================
-       SUCCESS MESSAGE
+       SUCCESS MESSAGE - FIXED: ប្រើពាក្យដែលអ្នកចង់បាន
     ============================================================ */
     #successMessage {
       display: none;
       background: var(--success-bg);
       border: 2px solid #BBF7D0;
       color: #166534;
-      padding: 20px;
+      padding: 24px 20px;
       border-radius: var(--radius-sm);
       margin-top: 24px;
       text-align: center;
-      font-weight: 600;
+      font-weight: 500;
       font-size: 16px;
       animation: fadeIn 0.5s ease;
+      line-height: 1.8;
     }
 
-    #successMessage i { font-size: 28px; display: block; margin-bottom: 8px; }
+    #successMessage i { 
+      font-size: 32px; 
+      display: block; 
+      margin-bottom: 10px;
+      color: var(--success);
+    }
+
+    #successMessage .success-sub {
+      font-size: 14px;
+      color: #166534;
+      opacity: 0.8;
+      margin-top: 4px;
+    }
 
     /* ============================================================
        RULES
@@ -691,7 +704,7 @@
   ============================================================ -->
   <header>
     <h1><i class="fas fa-briefcase"></i> ភ្នាក់ងារជ្រើសរើសបុគ្គលិកទូទៅ</h1>
-    <p>សូមស្វាគមន៍មកកាន់ទំព័រប្រកាសការងារ និងដាក់ពាក្យធ្វើការ</p>
+    <p>ស្វែងរកការងារសមរម្យ និងដាក់ពាក្យធ្វើការបានយ៉ាងងាយស្រួល</p>
   </header>
 
   <!-- ============================================================
@@ -720,9 +733,9 @@
            NEW: ឈ្មោះក្រុមហ៊ុនជ្រើសរើសបុគ្គលិក
       ========================================================== -->
       <div class="form-group">
-        <label>ឈ្មោះក្រុមហ៊ុនជ្រើសរើសបុគ្គលិក <span class="required-star">*</span></label>
+        <label>ឈ្មោះក្រុមហ៊ុនឬCodeបង្ហោះជ្រើសរើសបុគ្គលិក  <span class="required-star">*</span></label>
         <input type="text" id="companyName" placeholder="បំពេញឈ្មោះក្រុមហ៊ុនដែលអ្នកឃើញក្នុងការបង្ហោះ" required>
-        <div class="form-hint"><i class="fas fa-info-circle"></i> សូមបញ្ចូលឈ្មោះក្រុមហ៊ុនដូចដែលបានបង្ហោះលើ Facebook, TikTok ឬ Telegram</div>
+        <div class="form-hint"><i class="fas fa-info-circle"></i> សូមបញ្ចូលឈ្មោះក្រុមហ៊ុនឬCodeដូចដែលបានបង្ហោះលើ Facebook, TikTok ឬ Telegram</div>
       </div>
 
       <!-- ==========================================================
@@ -961,9 +974,15 @@
         </button>
       </div>
     </form>
+    
+    <!-- ==========================================================
+       SUCCESS MESSAGE - FIXED: ប្រើពាក្យដែលអ្នកចង់បាន
+    ========================================================== -->
     <div id="successMessage">
       <i class="fas fa-check-circle"></i>
-      ✅ ការដាក់ពាក្យរបស់អ្នកត្រូវបានផ្ញើដោយជោគជ័យ!
+      <div>✅ ការដាក់ពាក្យរបស់អ្នកត្រូវបានផ្ញើដោយជោគជ័យ!</div>
+      <div style="margin-top: 6px;">សូមរង់ចាំភ្នាក់ងាររបស់យើងទាក់ទងអ្នកតាមរយៈ Telegram ជាមួយនឹងការជូនដំណឹងដល់អ្នក។</div>
+      <div class="success-sub"><i class="fas fa-clock"></i> សូមអរគុណសម្រាប់ការដាក់ពាក្យ!</div>
     </div>
 
     <!-- ==========================================================
@@ -1040,540 +1059,629 @@
        JAVASCRIPT
   ============================================================ -->
   <script>
-    let selectedJob = '';
     let isSubmitting = false;
-    let applicationHistory = JSON.parse(localStorage.getItem('applicationHistory')) || [];
+let applicationHistory = JSON.parse(localStorage.getItem('applicationHistory')) || [];
 
-    // ============================================================
-    // ENFORCE ENGLISH NUMBERS
-    // ============================================================
-    function enforceEnglishNumbers(input) {
-      const khmerNumbers = ['០','១','២','៣','៤','៥','៦','៧','៨','៩'];
-      const englishNumbers = ['0','1','2','3','4','5','6','7','8','9'];
-      
-      let value = input.value;
-      let converted = '';
-      for (let char of value) {
-        const index = khmerNumbers.indexOf(char);
-        if (index !== -1) {
-          converted += englishNumbers[index];
-        } else {
-          converted += char;
-        }
-      }
-      input.value = converted;
-      
-      if (input.type === 'number') {
-        input.value = input.value.replace(/[^0-9.]/g, '');
-      }
+// ============================================================
+// ENFORCE ENGLISH NUMBERS
+// ============================================================
+function enforceEnglishNumbers(input) {
+  const khmerNumbers = ['០','១','២','៣','៤','៥','៦','៧','៨','៩'];
+  const englishNumbers = ['0','1','2','3','4','5','6','7','8','9'];
+  
+  let value = input.value;
+  let converted = '';
+  for (let char of value) {
+    const index = khmerNumbers.indexOf(char);
+    if (index !== -1) {
+      converted += englishNumbers[index];
+    } else {
+      converted += char;
     }
+  }
+  input.value = converted;
+  
+  if (input.type === 'number') {
+    input.value = input.value.replace(/[^0-9.]/g, '');
+  }
+}
 
-    // ============================================================
-    // ADDRESS "OTHER" HANDLING with Conditional Logic
-    // ============================================================
-    const provinceSelect = document.getElementById('province');
-    const districtSelect = document.getElementById('district');
-    const communeSelect = document.getElementById('commune');
-    const districtOtherContainer = document.getElementById('districtOtherContainer');
-    const communeOtherContainer = document.getElementById('communeOtherContainer');
-    const districtOther = document.getElementById('districtOther');
-    const communeOther = document.getElementById('communeOther');
+// ============================================================
+// ADDRESS "OTHER" HANDLING with Conditional Logic
+// ============================================================
+const provinceSelect = document.getElementById('province');
+const districtSelect = document.getElementById('district');
+const communeSelect = document.getElementById('commune');
+const districtOtherContainer = document.getElementById('districtOtherContainer');
+const communeOtherContainer = document.getElementById('communeOtherContainer');
+const districtOther = document.getElementById('districtOther');
+const communeOther = document.getElementById('communeOther');
 
-    // Store original options for district and commune
-    const districtOptions = districtSelect.innerHTML;
-    const communeOptions = communeSelect.innerHTML;
+// Store original options for district and commune
+const districtOptions = districtSelect.innerHTML;
+const communeOptions = communeSelect.innerHTML;
 
-    function updateAddressFields() {
-      const selectedProvince = provinceSelect.value;
-      const isPhnomPenh = selectedProvince === 'ភ្នំពេញ';
+function updateAddressFields() {
+  const selectedProvince = provinceSelect.value;
+  const isPhnomPenh = selectedProvince === 'ភ្នំពេញ';
 
-      if (isPhnomPenh) {
-        // Show all district and commune options
-        districtSelect.innerHTML = districtOptions;
-        communeSelect.innerHTML = communeOptions;
-        districtSelect.disabled = false;
-        communeSelect.disabled = false;
-        districtSelect.required = true;
-        communeSelect.required = true;
-        // Hide other containers
-        districtOtherContainer.style.display = 'none';
-        communeOtherContainer.style.display = 'none';
-        districtOther.value = '';
-        communeOther.value = '';
-        districtOther.required = false;
-        communeOther.required = false;
-      } else {
-        // Only show "other" option for district and commune
-        districtSelect.innerHTML = `
-          <option value="">-- ស្រុក/ខណ្ឌ --</option>
-          <option value="other">ផ្សេងៗ</option>
-        `;
-        communeSelect.innerHTML = `
-          <option value="">-- ឃុំ/សង្កាត់ --</option>
-          <option value="other">ផ្សេងៗ</option>
-        `;
-        districtSelect.disabled = false;
-        communeSelect.disabled = false;
-        districtSelect.required = true;
-        communeSelect.required = true;
-        // Reset other containers
-        districtOtherContainer.style.display = 'none';
-        communeOtherContainer.style.display = 'none';
-        districtOther.value = '';
-        communeOther.value = '';
-        districtOther.required = false;
-        communeOther.required = false;
-      }
-    }
+  if (isPhnomPenh) {
+    districtSelect.innerHTML = districtOptions;
+    communeSelect.innerHTML = communeOptions;
+    districtSelect.disabled = false;
+    communeSelect.disabled = false;
+    districtSelect.required = true;
+    communeSelect.required = true;
+    districtOtherContainer.style.display = 'none';
+    communeOtherContainer.style.display = 'none';
+    districtOther.value = '';
+    communeOther.value = '';
+    districtOther.required = false;
+    communeOther.required = false;
+  } else {
+    districtSelect.innerHTML = `
+      <option value="">-- ស្រុក/ខណ្ឌ --</option>
+      <option value="other">ផ្សេងៗ</option>
+    `;
+    communeSelect.innerHTML = `
+      <option value="">-- ឃុំ/សង្កាត់ --</option>
+      <option value="other">ផ្សេងៗ</option>
+    `;
+    districtSelect.disabled = false;
+    communeSelect.disabled = false;
+    districtSelect.required = true;
+    communeSelect.required = true;
+    districtOtherContainer.style.display = 'none';
+    communeOtherContainer.style.display = 'none';
+    districtOther.value = '';
+    communeOther.value = '';
+    districtOther.required = false;
+    communeOther.required = false;
+  }
+}
 
-    provinceSelect.addEventListener('change', updateAddressFields);
+provinceSelect.addEventListener('change', updateAddressFields);
 
-    // District "other" handling
-    districtSelect.addEventListener('change', function() {
-      if (this.value === 'other') {
-        districtOtherContainer.style.display = 'block';
-        districtOther.required = true;
-        districtOther.placeholder = "សូមបញ្ជាក់ស្រុក/ខណ្ឌរបស់អ្នក...";
-      } else {
-        districtOtherContainer.style.display = 'none';
-        districtOther.value = '';
-        districtOther.required = false;
-      }
-    });
+districtSelect.addEventListener('change', function() {
+  if (this.value === 'other') {
+    districtOtherContainer.style.display = 'block';
+    districtOther.required = true;
+    districtOther.placeholder = "សូមបញ្ជាក់ស្រុក/ខណ្ឌរបស់អ្នក...";
+  } else {
+    districtOtherContainer.style.display = 'none';
+    districtOther.value = '';
+    districtOther.required = false;
+  }
+});
 
-    // Commune "other" handling
-    communeSelect.addEventListener('change', function() {
-      if (this.value === 'other') {
-        communeOtherContainer.style.display = 'block';
-        communeOther.required = true;
-        communeOther.placeholder = "សូមបញ្ជាក់ឃុំ/សង្កាត់របស់អ្នក...";
-      } else {
-        communeOtherContainer.style.display = 'none';
-        communeOther.value = '';
-        communeOther.required = false;
-      }
-    });
+communeSelect.addEventListener('change', function() {
+  if (this.value === 'other') {
+    communeOtherContainer.style.display = 'block';
+    communeOther.required = true;
+    communeOther.placeholder = "សូមបញ្ជាក់ឃុំ/សង្កាត់របស់អ្នក...";
+  } else {
+    communeOtherContainer.style.display = 'none';
+    communeOther.value = '';
+    communeOther.required = false;
+  }
+});
 
-    // ============================================================
-    // EDUCATION / OTHER JOB INPUTS
-    // ============================================================
-    document.getElementById("education").addEventListener("change", function() {
-      const otherInput = document.getElementById("otherEducation");
-      if (this.value === "other") {
-        otherInput.placeholder = "សូមបញ្ជាក់កម្រិតសិក្សារបស់អ្នក...";
-        otherInput.required = true;
-      } else {
-        otherInput.placeholder = "បើជ្រើសរើស 'ផ្សេងៗ' សូមបញ្ជាក់នៅទីនេះ";
-        otherInput.value = "";
-        otherInput.required = false;
-      }
-    });
+// ============================================================
+// EDUCATION / OTHER JOB INPUTS
+// ============================================================
+document.getElementById("education").addEventListener("change", function() {
+  const otherInput = document.getElementById("otherEducation");
+  if (this.value === "other") {
+    otherInput.placeholder = "សូមបញ្ជាក់កម្រិតសិក្សារបស់អ្នក...";
+    otherInput.required = true;
+  } else {
+    otherInput.placeholder = "បើជ្រើសរើស 'ផ្សេងៗ' សូមបញ្ជាក់នៅទីនេះ";
+    otherInput.value = "";
+    otherInput.required = false;
+  }
+});
 
-    document.getElementById("previousJob").addEventListener("change", function() {
-      const otherInput = document.getElementById("otherJob");
-      if (this.value === "other") {
-        otherInput.placeholder = "សូមបញ្ជាក់ការងាររបស់អ្នក...";
-        otherInput.required = true;
-      } else {
-        otherInput.placeholder = "បើជ្រើសរើស 'ផ្សេងៗ' សូមបញ្ជាក់នៅទីនេះ";
-        otherInput.value = "";
-        otherInput.required = false;
-      }
-    });
+document.getElementById("previousJob").addEventListener("change", function() {
+  const otherInput = document.getElementById("otherJob");
+  if (this.value === "other") {
+    otherInput.placeholder = "សូមបញ្ជាក់ការងាររបស់អ្នក...";
+    otherInput.required = true;
+  } else {
+    otherInput.placeholder = "បើជ្រើសរើស 'ផ្សេងៗ' សូមបញ្ជាក់នៅទីនេះ";
+    otherInput.value = "";
+    otherInput.required = false;
+  }
+});
 
-    // ============================================================
-    // WORK STATUS & EXPERIENCE - Conditional Logic
-    // ============================================================
-    const workStatusRadios = document.querySelectorAll('input[name="workStatus"]');
-    const experienceRadios = document.querySelectorAll('input[name="experience"]');
-    const experienceGroup = document.getElementById('experienceGroup');
-    const experienceLabels = experienceGroup.querySelectorAll('label');
+// ============================================================
+// WORK STATUS & EXPERIENCE - Conditional Logic
+// ============================================================
+const workStatusRadios = document.querySelectorAll('input[name="workStatus"]');
+const experienceRadios = document.querySelectorAll('input[name="experience"]');
+const experienceGroup = document.getElementById('experienceGroup');
+const experienceLabels = experienceGroup.querySelectorAll('label');
 
-    function updateExperienceOptions() {
-      let selectedWorkStatus = '';
-      workStatusRadios.forEach(radio => {
-        if (radio.checked) selectedWorkStatus = radio.value;
-      });
+function updateExperienceOptions() {
+  let selectedWorkStatus = '';
+  workStatusRadios.forEach(radio => {
+    if (radio.checked) selectedWorkStatus = radio.value;
+  });
 
-      if (selectedWorkStatus === 'កំពុងធ្វើការ') {
-        // Disable "មិនធ្លាប់មាន" option
-        experienceLabels.forEach((label, index) => {
-          const radio = experienceRadios[index];
-          if (radio.value === 'មិនធ្លាប់មាន') {
-            label.classList.add('disabled');
-            radio.disabled = true;
-            if (radio.checked) {
-              radio.checked = false;
-              // Auto-select "ធ្លាប់មាន"
-              experienceRadios.forEach(r => {
-                if (r.value === 'ធ្លាប់មាន') {
-                  r.checked = true;
-                }
-              });
+  if (selectedWorkStatus === 'កំពុងធ្វើការ') {
+    experienceLabels.forEach((label, index) => {
+      const radio = experienceRadios[index];
+      if (radio.value === 'មិនធ្លាប់មាន') {
+        label.classList.add('disabled');
+        radio.disabled = true;
+        if (radio.checked) {
+          radio.checked = false;
+          experienceRadios.forEach(r => {
+            if (r.value === 'ធ្លាប់មាន') {
+              r.checked = true;
             }
-          } else {
-            label.classList.remove('disabled');
-            radio.disabled = false;
-          }
-        });
-      } else {
-        // Enable all options
-        experienceLabels.forEach((label, index) => {
-          label.classList.remove('disabled');
-          experienceRadios[index].disabled = false;
-        });
-      }
-    }
-
-    // Add event listeners to work status radios
-    workStatusRadios.forEach(radio => {
-      radio.addEventListener('change', updateExperienceOptions);
-    });
-
-    // ============================================================
-    // CUSTOM ALERT
-    // ============================================================
-    function showAlert(message, type = 'info') {
-      const alertEl = document.getElementById('customAlert');
-      const iconEl = document.getElementById('alertIcon');
-      const msgEl = document.getElementById('alertMessage');
-      
-      alertEl.className = 'custom-alert';
-      
-      const icons = {
-        success: '✅',
-        error: '❌',
-        warning: '⚠️',
-        info: 'ℹ️'
-      };
-      
-      iconEl.textContent = icons[type] || 'ℹ️';
-      alertEl.classList.add(type);
-      msgEl.textContent = message;
-      
-      clearTimeout(window.alertTimeout);
-      window.alertTimeout = setTimeout(() => {
-        closeAlert();
-      }, 5000);
-    }
-    
-    function closeAlert() {
-      const alertEl = document.getElementById('customAlert');
-      alertEl.className = 'custom-alert';
-      clearTimeout(window.alertTimeout);
-    }
-
-    // ============================================================
-    // NAVIGATION
-    // ============================================================
-    document.querySelectorAll('nav a').forEach(link => {
-      link.addEventListener('click', function(e) {
-        e.preventDefault();
-        const sectionId = this.dataset.section;
-        if (!sectionId) return;
-        
-        document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
-        this.classList.add('active');
-        
-        document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
-        const target = document.getElementById(sectionId);
-        if (target) {
-          target.classList.add('active');
-          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      });
-    });
-
-    // ============================================================
-    // GO BACK
-    // ============================================================
-    function goBack() {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    // ============================================================
-    // HISTORY FUNCTIONS
-    // ============================================================
-    function openHistory() {
-      const modal = document.getElementById('historyModal');
-      const list = document.getElementById('historyList');
-      
-      if (applicationHistory.length === 0) {
-        list.innerHTML = `
-          <div class="history-empty">
-            <i class="fas fa-inbox"></i>
-            មិនទាន់មានប្រវត្តិដាក់ពាក្យនៅឡើយទេ
-          </div>
-        `;
-      } else {
-        let html = '';
-        const reversed = [...applicationHistory].reverse();
-        for (const item of reversed) {
-          html += `
-            <div class="history-item">
-              <div class="history-header">
-                <span class="history-name"><i class="fas fa-user" style="color:var(--accent);"></i> ${item.name}</span>
-                <span class="history-date"><i class="far fa-clock"></i> ${item.date}</span>
-              </div>
-              <div>
-                <span class="history-job"><i class="fas fa-briefcase"></i> ${item.job}</span>
-              </div>
-              <div style="color:var(--text-muted); font-size:13px; margin-top:6px; display:flex; flex-wrap:wrap; gap:16px;">
-                <span><i class="fas fa-phone"></i> ${item.phone}</span>
-                <span><i class="fab fa-telegram"></i> ${item.telegram}</span>
-              </div>
-            </div>
-          `;
-        }
-        list.innerHTML = html;
-      }
-      
-      modal.classList.add('active');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeHistory() {
-      document.getElementById('historyModal').classList.remove('active');
-      document.body.style.overflow = '';
-    }
-
-    document.getElementById('historyModal').addEventListener('click', function(e) {
-      if (e.target === this) {
-        closeHistory();
-      }
-    });
-
-    // ============================================================
-    // FORM SUBMISSION    // ============================================================
-    document.getElementById("jobForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-      
-      if (isSubmitting) {
-        showAlert('កំពុងដំណើរការ... សូមរង់ចាំបន្តិច!', 'warning');
-        return;
-      }
-      
-      // Get all form values
-      const companyName = document.getElementById('companyName').value;
-      const expectedSalary = document.getElementById('expectedSalary').value;
-      const startDate = document.getElementById('startDate').value;
-      const fullName = document.getElementById('fullName').value;
-      const age = document.getElementById('age').value;
-      const height = document.getElementById('height').value;
-      const education = document.getElementById('education').value;
-      const otherEducation = document.getElementById('otherEducation').value;
-      const province = document.getElementById('province').value;
-      const district = document.getElementById('district').value;
-      const districtOther = document.getElementById('districtOther').value;
-      const commune = document.getElementById('commune').value;
-      const communeOther = document.getElementById('communeOther').value;
-      const village = document.getElementById('village').value;
-      const workStatus = document.querySelector('input[name="workStatus"]:checked')?.value || '';
-      const experience = document.querySelector('input[name="experience"]:checked')?.value || '';
-      const previousJob = document.getElementById('previousJob').value;
-      const otherJob = document.getElementById('otherJob').value;
-      const telegram = document.getElementById('telegram').value;
-      const phone = document.getElementById('phone').value;
-      const description = document.getElementById('description').value;
-      const fileInput = document.getElementById('cvFile');
-      const file = fileInput.files[0];
-      
-      const finalDistrict = district === 'other' ? districtOther : district;
-      const finalCommune = commune === 'other' ? communeOther : commune;
-      const fullAddress = `${village}, ${finalCommune}, ${finalDistrict}, ${province}`;
-      
-      // Validate all required fields
-      if (!companyName || !expectedSalary || !startDate || !fullName || !age || !height || !education || !province || !district || !commune || !village || !workStatus || !experience || !telegram || !phone || !file) {
-        showAlert('សូមបំពេញព័ត៌មានឲ្យបានពេញលេញ និងភ្ជាប់ឯកសារ!', 'error');
-        return;
-      }
-      
-      isSubmitting = true;
-      document.getElementById('submitBtn').disabled = true;
-      document.getElementById('submitBtn').innerHTML = '<i class="fas fa-spinner fa-spin"></i> កំពុងផ្ញើ...';
-      
-      const now = new Date();
-      const dateTime = now.toLocaleString('km-KH', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit'
-      });
-      
-      const finalEducation = education === 'other' ? otherEducation : education;
-      const finalJob = previousJob === 'other' ? otherJob : (previousJob || 'មិនមាន');
-      
-      // Format start date
-      const startDateObj = new Date(startDate);
-      const formattedStartDate = startDateObj.toLocaleDateString('km-KH', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      });
-      
-      const caption = `📋 *ការដាក់ពាក្យការងារថ្មី*\n\n` +
-        `🏢 *ក្រុមហ៊ុន:* ${companyName}\n` +
-        `💰 *ប្រាក់ខែរំពឹងទុក:* ${expectedSalary}\n` +
-        `📅 *អាចចាប់ផ្ដើមធ្វើការ:* ${formattedStartDate}\n` +
-        `👤 *ឈ្មោះ:* ${fullName}\n` +
-        `📅 *អាយុ:* ${age}\n` +
-        `📏 *កម្ពស់:* ${height} សង់ទីម៉ែត្រ\n` +
-        `🎓 *កម្រិតសិក្សា:* ${finalEducation}\n` +
-        `📍 *អាសយដ្ឋាន:* ${fullAddress}\n` +
-        `💼 *ស្ថានភាពការងារ:* ${workStatus}\n` +
-        `📊 *បទពិសោធន៍:* ${experience}\n` +
-        `💻 *ការងារពីមុន:* ${finalJob}\n` +
-        `📱 *តេឡេក្រាម:* ${telegram}\n` +
-        `📞 *លេខទូរស័ព្ទ:* ${phone}\n` +
-        `📝 *ប្រវត្តិការងារ:* ${description || 'មិនមាន'}\n` +
-        `🕐 *កាលបរិច្ឆេទដាក់ពាក្យ:* ${dateTime}\n\n` +
-        `🔗 ផ្ញើពី: ${window.location.href}`;
-      
-      const historyItem = {
-        name: fullName,
-        job: companyName || 'ការងារទូទៅ',
-        phone: phone,
-        telegram: telegram,
-        date: dateTime
-      };
-      applicationHistory.push(historyItem);
-      localStorage.setItem('applicationHistory', JSON.stringify(applicationHistory));
-      
-      const reader = new FileReader();
-      reader.onload = function(event) {
-        const fileBase64 = event.target.result;
-        sendPhotoWithCaption(fileBase64, file.name, caption);
-      };
-      reader.onerror = function() {
-        showAlert('❌ មិនអាចអានឯកសារបាន។', 'error');
-        resetSubmitButton();
-      };
-      reader.readAsDataURL(file);
-    });
-
-    // ============================================================
-    // SEND PHOTO WITH CAPTION
-    // ============================================================
-    function sendPhotoWithCaption(fileBase64, fileName, caption) {
-      const token = '8133960195:AAGss5J-d0GXsFkfsOa3yjQ7p3yp9W5uCFs';
-      const chatId = '-5304708525';
-      
-      fetch(fileBase64)
-        .then(res => res.blob())
-        .then(blob => {
-          const formData = new FormData();
-          formData.append('chat_id', chatId);
-          
-          const isImage = blob.type.startsWith('image/');
-          
-          if (isImage) {
-            formData.append('photo', blob, fileName);
-          } else {
-            formData.append('document', blob, fileName);
-          }
-          
-          formData.append('caption', caption);
-          formData.append('parse_mode', 'Markdown');
-          
-          const method = isImage ? 'sendPhoto' : 'sendDocument';
-          const url = `https://api.telegram.org/bot${token}/${method}`;
-          
-          return fetch(url, {
-            method: 'POST',
-            body: formData
           });
-        })
-        .then(response => response.json())
-        .then(data => {
-          if (data.ok) {
-            document.getElementById('successMessage').style.display = 'block';
-            showAlert('✅ ការដាក់ពាក្យរបស់អ្នកត្រូវបានផ្ញើដោយជោគជ័យ!', 'success');
-            
-            setTimeout(() => {
-              document.getElementById('jobForm').reset();
-              document.getElementById('successMessage').style.display = 'none';
-              document.getElementById('selectedJobInfo').classList.remove('show');
-              document.getElementById('otherEducation').value = '';
-              document.getElementById('otherJob').value = '';
-              document.getElementById('districtOtherContainer').style.display = 'none';
-              document.getElementById('communeOtherContainer').style.display = 'none';
-              document.getElementById('districtOther').value = '';
-              document.getElementById('communeOther').value = '';
-              resetSubmitButton();
-              updateAddressFields();
-              updateExperienceOptions();
-            }, 3000);
-          } else {
-            showAlert('❌ មានបញ្ហាក្នុងការផ្ញើព័ត៌មាន។', 'error');
-            resetSubmitButton();
-          }
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          showAlert('❌ មានបញ្ហាក្នុងការផ្ញើព័ត៌មាន។', 'error');
-          resetSubmitButton();
-        });
-    }
-
-    function resetSubmitButton() {
-      isSubmitting = false;
-      document.getElementById('submitBtn').disabled = false;
-      document.getElementById('submitBtn').innerHTML = '<i class="fas fa-paper-plane"></i> ផ្ញើការដាក់ពាក្យ';
-    }
-
-    // ============================================================
-    // COPY WEBSITE LINK
-    // ============================================================
-    function copyWebsiteLink() {
-      const url = window.location.href;
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(url).then(() => {
-          showAlert('🔗 តំណភ្ជាប់ត្រូវបានចម្លងជោគជ័យ!', 'success');
-        }).catch(() => {
-          fallbackCopy(url);
-        });
+        }
       } else {
-        fallbackCopy(url);
+        label.classList.remove('disabled');
+        radio.disabled = false;
       }
-    }
+    });
+  } else {
+    experienceLabels.forEach((label, index) => {
+      label.classList.remove('disabled');
+      experienceRadios[index].disabled = false;
+    });
+  }
+}
 
-    function fallbackCopy(text) {
-      const textArea = document.createElement("textarea");
-      textArea.value = text;
-      textArea.style.position = "fixed";
-      textArea.style.left = "-9999px";
-      textArea.style.top = "-9999px";
-      document.body.appendChild(textArea);
-      textArea.select();
-      try {
-        document.execCommand('copy');
-        showAlert('🔗 តំណភ្ជាប់ត្រូវបានចម្លងជោគជ័យ!', 'success');
-      } catch (err) {
-        showAlert('សូមចម្លងតំណភ្ជាប់នេះដោយដៃ: ' + text, 'warning');
+workStatusRadios.forEach(radio => {
+  radio.addEventListener('change', updateExperienceOptions);
+});
+
+// ============================================================
+// CUSTOM ALERT
+// ============================================================
+function showAlert(message, type = 'info') {
+  const alertEl = document.getElementById('customAlert');
+  const iconEl = document.getElementById('alertIcon');
+  const msgEl = document.getElementById('alertMessage');
+  
+  alertEl.className = 'custom-alert';
+  
+  const icons = {
+    success: '✅',
+    error: '❌',
+    warning: '⚠️',
+    info: 'ℹ️'
+  };
+  
+  iconEl.textContent = icons[type] || 'ℹ️';
+  alertEl.classList.add(type);
+  msgEl.textContent = message;
+  
+  clearTimeout(window.alertTimeout);
+  window.alertTimeout = setTimeout(() => {
+    closeAlert();
+  }, 5000);
+}
+
+function closeAlert() {
+  const alertEl = document.getElementById('customAlert');
+  alertEl.className = 'custom-alert';
+  clearTimeout(window.alertTimeout);
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+document.querySelectorAll('nav a').forEach(link => {
+  link.addEventListener('click', function(e) {
+    e.preventDefault();
+    const sectionId = this.dataset.section;
+    if (!sectionId) return;
+    
+    document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+    this.classList.add('active');
+    
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    const target = document.getElementById(sectionId);
+    if (target) {
+      target.classList.add('active');
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+
+// ============================================================
+// GO BACK
+// ============================================================
+function goBack() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ============================================================
+// HISTORY FUNCTIONS - UPDATED with Copy Feature
+// ============================================================
+function openHistory() {
+  const modal = document.getElementById('historyModal');
+  const list = document.getElementById('historyList');
+  
+  if (applicationHistory.length === 0) {
+    list.innerHTML = `
+      <div class="history-empty">
+        <i class="fas fa-inbox"></i>
+        មិនទាន់មានប្រវត្តិដាក់ពាក្យនៅឡើយទេ
+      </div>
+    `;
+  } else {
+    let html = '';
+    const reversed = [...applicationHistory].reverse();
+    for (const item of reversed) {
+      const copyText = `📋 *ការដាក់ពាក្យការងារថ្មី*\n\n` +
+        `🏢 *ក្រុមហ៊ុន:* ${item.company || 'មិនមាន'}\n` +
+        `💰 *ប្រាក់ខែរំពឹងទុក:* ${item.expectedSalary || 'មិនមាន'}\n` +
+        `📅 *អាចចាប់ផ្ដើមធ្វើការ:* ${item.startDate || 'មិនមាន'}\n` +
+        `👤 *ឈ្មោះ:* ${item.name}\n` +
+        `📅 *អាយុ:* ${item.age || 'មិនមាន'}\n` +
+        `📏 *កម្ពស់:* ${item.height || 'មិនមាន'} សង់ទីម៉ែត្រ\n` +
+        `🎓 *កម្រិតសិក្សា:* ${item.education || 'មិនមាន'}\n` +
+        `📍 *អាសយដ្ឋាន:* ${item.address || 'មិនមាន'}\n` +
+        `💼 *ស្ថានភាពការងារ:* ${item.workStatus || 'មិនមាន'}\n` +
+        `📊 *បទពិសោធន៍:* ${item.experience || 'មិនមាន'}\n` +
+        `💻 *ការងារពីមុន:* ${item.previousJob || 'មិនមាន'}\n` +
+        `📱 *តេឡេក្រាម:* ${item.telegram}\n` +
+        `📞 *លេខទូរស័ព្ទ:* ${item.phone}\n` +
+        `📝 *ប្រវត្តិការងារ:* ${item.description || 'មិនមាន'}\n` +
+        `🕐 *កាលបរិច្ឆេទដាក់ពាក្យ:* ${item.date}\n\n` +
+        `🔗 ផ្ញើពី: ${window.location.href}`;
+
+      html += `
+        <div class="history-item" style="position: relative;">
+          <div class="history-header">
+            <span class="history-name"><i class="fas fa-user" style="color:var(--accent);"></i> ${item.name}</span>
+            <span class="history-date"><i class="far fa-clock"></i> ${item.date}</span>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px;">
+            <span class="history-job"><i class="fas fa-briefcase"></i> ${item.job || 'ការងារទូទៅ'}</span>
+            <span style="color:var(--text-muted); font-size:13px;"><i class="fas fa-phone"></i> ${item.phone}</span>
+            <span style="color:var(--text-muted); font-size:13px;"><i class="fab fa-telegram"></i> ${item.telegram}</span>
+          </div>
+          <div class="history-details" style="display: none; margin-top: 10px; padding: 12px 14px; background: #F8FAFC; border-radius: 8px; font-size: 13px; border: 1px solid var(--border);">
+            <div><strong>🏢 ក្រុមហ៊ុន:</strong> ${item.company || 'មិនមាន'}</div>
+            <div><strong>💰 ប្រាក់ខែរំពឹងទុក:</strong> ${item.expectedSalary || 'មិនមាន'}</div>
+            <div><strong>📅 អាចចាប់ផ្ដើមធ្វើការ:</strong> ${item.startDate || 'មិនមាន'}</div>
+            <div><strong>📅 អាយុ:</strong> ${item.age || 'មិនមាន'}</div>
+            <div><strong>📏 កម្ពស់:</strong> ${item.height || 'មិនមាន'} សង់ទីម៉ែត្រ</div>
+            <div><strong>🎓 កម្រិតសិក្សា:</strong> ${item.education || 'មិនមាន'}</div>
+            <div><strong>📍 អាសយដ្ឋាន:</strong> ${item.address || 'មិនមាន'}</div>
+            <div><strong>💼 ស្ថានភាពការងារ:</strong> ${item.workStatus || 'មិនមាន'}</div>
+            <div><strong>📊 បទពិសោធន៍:</strong> ${item.experience || 'មិនមាន'}</div>
+            <div><strong>💻 ការងារពីមុន:</strong> ${item.previousJob || 'មិនមាន'}</div>
+            <div><strong>📝 ប្រវត្តិការងារ:</strong> ${item.description || 'មិនមាន'}</div>
+          </div>
+          <div style="display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap;">
+            <button class="copy-history-btn" onclick="copyHistoryItem(this)" data-copy='${copyText.replace(/'/g, "&#39;")}' style="padding: 5px 14px; background: var(--accent); color: white; border: none; border-radius: 6px; font-size: 12px; cursor: pointer; font-family: 'Kantumruy Pro', sans-serif; display: inline-flex; align-items: center; gap: 4px;">
+              <i class="fas fa-copy"></i> ចម្លង
+            </button>
+            <button class="toggle-details-btn" onclick="toggleHistoryDetails(this)" style="padding: 5px 14px; background: var(--bg-light); color: var(--text); border: 1px solid var(--border); border-radius: 6px; font-size: 12px; cursor: pointer; font-family: 'Kantumruy Pro', sans-serif; display: inline-flex; align-items: center; gap: 4px;">
+              <i class="fas fa-chevron-down"></i> មើលបន្ថែម
+            </button>
+          </div>
+        </div>
+      `;
+    }
+    list.innerHTML = html;
+  }
+  
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeHistory() {
+  document.getElementById('historyModal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('historyModal').addEventListener('click', function(e) {
+  if (e.target === this) {
+    closeHistory();
+  }
+});
+
+// ============================================================
+// COPY HISTORY ITEM
+// ============================================================
+function copyHistoryItem(button) {
+  const textToCopy = button.getAttribute('data-copy');
+  const textArea = document.createElement('textarea');
+  textArea.value = textToCopy;
+  textArea.style.position = 'fixed';
+  textArea.style.left = '-9999px';
+  textArea.style.top = '-9999px';
+  document.body.appendChild(textArea);
+  textArea.select();
+  try {
+    document.execCommand('copy');
+    showAlert('✅ ព័ត៌មានប្រវត្តិត្រូវបានចម្លងជោគជ័យ!', 'success');
+  } catch (err) {
+    showAlert('❌ មិនអាចចម្លងព័ត៌មានបាន។ សូមចម្លងដោយដៃ។', 'error');
+  }
+  document.body.removeChild(textArea);
+}
+
+// ============================================================
+// TOGGLE HISTORY DETAILS
+// ============================================================
+function toggleHistoryDetails(button) {
+  const item = button.closest('.history-item');
+  const details = item.querySelector('.history-details');
+  const icon = button.querySelector('i');
+  
+  if (details.style.display === 'none') {
+    details.style.display = 'block';
+    button.innerHTML = '<i class="fas fa-chevron-up"></i> បិទបន្ថែម';
+  } else {
+    details.style.display = 'none';
+    button.innerHTML = '<i class="fas fa-chevron-down"></i> មើលបន្ថែម';
+  }
+}
+
+// ============================================================
+// FORM SUBMISSION - UPDATED to store more data
+// ============================================================
+document.getElementById("jobForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+  
+  if (isSubmitting) {
+    showAlert('កំពុងដំណើរការ... សូមរង់ចាំបន្តិច!', 'warning');
+    return;
+  }
+  
+  // Get all form values
+  const companyName = document.getElementById('companyName').value;
+  const expectedSalary = document.getElementById('expectedSalary').value;
+  const startDate = document.getElementById('startDate').value;
+  const fullName = document.getElementById('fullName').value;
+  const age = document.getElementById('age').value;
+  const height = document.getElementById('height').value;
+  const education = document.getElementById('education').value;
+  const otherEducation = document.getElementById('otherEducation').value;
+  const province = document.getElementById('province').value;
+  const district = document.getElementById('district').value;
+  const districtOther = document.getElementById('districtOther').value;
+  const commune = document.getElementById('commune').value;
+  const communeOther = document.getElementById('communeOther').value;
+  const village = document.getElementById('village').value;
+  const workStatus = document.querySelector('input[name="workStatus"]:checked')?.value || '';
+  const experience = document.querySelector('input[name="experience"]:checked')?.value || '';
+  const previousJob = document.getElementById('previousJob').value;
+  const otherJob = document.getElementById('otherJob').value;
+  const telegram = document.getElementById('telegram').value;
+  const phone = document.getElementById('phone').value;
+  const description = document.getElementById('description').value;
+  const fileInput = document.getElementById('cvFile');
+  const file = fileInput.files[0];
+  
+  const finalDistrict = district === 'other' ? districtOther : district;
+  const finalCommune = commune === 'other' ? communeOther : commune;
+  const fullAddress = `${village}, ${finalCommune}, ${finalDistrict}, ${province}`;
+  
+  // Validate all required fields
+  if (!companyName || !expectedSalary || !startDate || !fullName || !age || !height || !education || !province || !district || !commune || !village || !workStatus || !experience || !telegram || !phone || !file) {
+    showAlert('សូមបំពេញព័ត៌មានឲ្យបានពេញលេញ និងភ្ជាប់ឯកសារ!', 'error');
+    return;
+  }
+  
+  isSubmitting = true;
+  document.getElementById('submitBtn').disabled = true;
+  document.getElementById('submitBtn').innerHTML = '<i class="fas fa-spinner fa-spin"></i> កំពុងផ្ញើ...';
+  
+  const now = new Date();
+  const dateTime = now.toLocaleString('km-KH', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  });
+  
+  const finalEducation = education === 'other' ? otherEducation : education;
+  const finalJob = previousJob === 'other' ? otherJob : (previousJob || 'មិនមាន');
+  
+  // Format start date
+  const startDateObj = new Date(startDate);
+  const formattedStartDate = startDateObj.toLocaleDateString('km-KH', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+  
+  const caption = `📋 *ការដាក់ពាក្យការងារថ្មី*\n\n` +
+    `🏢 *ក្រុមហ៊ុន:* ${companyName}\n` +
+    `💰 *ប្រាក់ខែរំពឹងទុក:* ${expectedSalary}\n` +
+    `📅 *អាចចាប់ផ្ដើមធ្វើការ:* ${formattedStartDate}\n` +
+    `👤 *ឈ្មោះ:* ${fullName}\n` +
+    `📅 *អាយុ:* ${age}\n` +
+    `📏 *កម្ពស់:* ${height} សង់ទីម៉ែត្រ\n` +
+    `🎓 *កម្រិតសិក្សា:* ${finalEducation}\n` +
+    `📍 *អាសយដ្ឋាន:* ${fullAddress}\n` +
+    `💼 *ស្ថានភាពការងារ:* ${workStatus}\n` +
+    `📊 *បទពិសោធន៍:* ${experience}\n` +
+    `💻 *ការងារពីមុន:* ${finalJob}\n` +
+    `📱 *តេឡេក្រាម:* ${telegram}\n` +
+    `📞 *លេខទូរស័ព្ទ:* ${phone}\n` +
+    `📝 *ប្រវត្តិការងារ:* ${description || 'មិនមាន'}\n` +
+    `🕐 *កាលបរិច្ឆេទដាក់ពាក្យ:* ${dateTime}\n\n` +
+    `🔗 ផ្ញើពី: ${window.location.href}`;
+  
+  // Store full history data
+  const historyItem = {
+    name: fullName,
+    job: companyName || 'ការងារទូទៅ',
+    phone: phone,
+    telegram: telegram,
+    date: dateTime,
+    company: companyName,
+    expectedSalary: expectedSalary,
+    startDate: formattedStartDate,
+    age: age,
+    height: height,
+    education: finalEducation,
+    address: fullAddress,
+    workStatus: workStatus,
+    experience: experience,
+    previousJob: finalJob,
+    description: description || 'មិនមាន'
+  };
+  
+  applicationHistory.push(historyItem);
+  localStorage.setItem('applicationHistory', JSON.stringify(applicationHistory));
+  
+  const reader = new FileReader();
+  reader.onload = function(event) {
+    const fileBase64 = event.target.result;
+    sendPhotoWithCaption(fileBase64, file.name, caption);
+  };
+  reader.onerror = function() {
+    showAlert('❌ មិនអាចអានឯកសារបាន។', 'error');
+    resetSubmitButton();
+  };
+  reader.readAsDataURL(file);
+});
+
+// ============================================================
+// SEND PHOTO WITH CAPTION
+// ============================================================
+function sendPhotoWithCaption(fileBase64, fileName, caption) {
+  const token = '8133960195:AAGss5J-d0GXsFkfsOa3yjQ7p3yp9W5uCFs';
+  const chatId = '-5304708525';
+  
+  fetch(fileBase64)
+    .then(res => res.blob())
+    .then(blob => {
+      const formData = new FormData();
+      formData.append('chat_id', chatId);
+      
+      const isImage = blob.type.startsWith('image/');
+      
+      if (isImage) {
+        formData.append('photo', blob, fileName);
+      } else {
+        formData.append('document', blob, fileName);
       }
-      document.body.removeChild(textArea);
-    }
+      
+      formData.append('caption', caption);
+      formData.append('parse_mode', 'Markdown');
+      
+      const method = isImage ? 'sendPhoto' : 'sendDocument';
+      const url = `https://api.telegram.org/bot${token}/${method}`;
+      
+      return fetch(url, {
+        method: 'POST',
+        body: formData
+      });
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.ok) {
+        // ==========================================================
+        // FIXED: បង្ហាញ Success Message ជាមួយពាក្យដែលអ្នកចង់បាន
+        // ==========================================================
+        const successMsg = document.getElementById('successMessage');
+        successMsg.innerHTML = `
+          <i class="fas fa-check-circle"></i>
+          <div>✅ ការដាក់ពាក្យរបស់អ្នកត្រូវបានផ្ញើដោយជោគជ័យ!</div>
+          <div style="margin-top: 6px;">សូមរង់ចាំភ្នាក់ងាររបស់យើងទាក់ទងអ្នកតាមរយៈ Telegram ជាមួយនឹងការជូនដំណឹងដល់អ្នក។</div>
+          <div class="success-sub"><i class="fas fa-clock"></i> សូមអរគុណសម្រាប់ការដាក់ពាក្យ!</div>
+        `;
+        successMsg.style.display = 'block';
+        
+        showAlert('✅ ការដាក់ពាក្យរបស់អ្នកត្រូវបានផ្ញើដោយជោគជ័យ!', 'success');
+        
+        setTimeout(() => {
+          document.getElementById('jobForm').reset();
+          document.getElementById('successMessage').style.display = 'none';
+          document.getElementById('selectedJobInfo').classList.remove('show');
+          document.getElementById('otherEducation').value = '';
+          document.getElementById('otherJob').value = '';
+          document.getElementById('districtOtherContainer').style.display = 'none';
+          document.getElementById('communeOtherContainer').style.display = 'none';
+          document.getElementById('districtOther').value = '';
+          document.getElementById('communeOther').value = '';
+          resetSubmitButton();
+          updateAddressFields();
+          updateExperienceOptions();
+        }, 4000);
+      } else {
+        showAlert('❌ មានបញ្ហាក្នុងការផ្ញើព័ត៌មាន។', 'error');
+        resetSubmitButton();
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      showAlert('❌ មានបញ្ហាក្នុងការផ្ញើព័ត៌មាន។', 'error');
+      resetSubmitButton();
+    });
+}
 
-    // ============================================================
-    // INIT
-    // ============================================================
-    document.querySelector('nav a[data-section="home"]')?.classList.add('active');
-    document.getElementById('home')?.classList.add('active');
-    
-    // Set default date to tomorrow
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    document.getElementById('startDate').value = tomorrow.toISOString().split('T')[0];
-    
-    // Initialize address fields
-    updateAddressFields();
-    // Initialize experience options
-    updateExperienceOptions();
-    
-    console.log('✅ គេហទំព័របានដំណើរការយ៉ាងពេញលេញ!');
-    console.log(`📊 មានប្រវត្តិដាក់ពាក្យចំនួន ${applicationHistory.length} ប្រវត្តិ`);
+function resetSubmitButton() {
+  isSubmitting = false;
+  document.getElementById('submitBtn').disabled = false;
+  document.getElementById('submitBtn').innerHTML = '<i class="fas fa-paper-plane"></i> ផ្ញើការដាក់ពាក្យ';
+}
+
+// ============================================================
+// COPY WEBSITE LINK
+// ============================================================
+function copyWebsiteLink() {
+  const url = window.location.href;
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).then(() => {
+      showAlert('🔗 តំណភ្ជាប់ត្រូវបានចម្លងជោគជ័យ!', 'success');
+    }).catch(() => {
+      fallbackCopy(url);
+    });
+  } else {
+    fallbackCopy(url);
+  }
+}
+
+function fallbackCopy(text) {
+  const textArea = document.createElement("textarea");
+  textArea.value = text;
+  textArea.style.position = "fixed";
+  textArea.style.left = "-9999px";
+  textArea.style.top = "-9999px";
+  document.body.appendChild(textArea);
+  textArea.select();
+  try {
+    document.execCommand('copy');
+    showAlert('🔗 តំណភ្ជាប់ត្រូវបានចម្លងជោគជ័យ!', 'success');
+  } catch (err) {
+    showAlert('សូមចម្លងតំណភ្ជាប់នេះដោយដៃ: ' + text, 'warning');
+  }
+  document.body.removeChild(textArea);
+}
+
+// ============================================================
+// INIT
+// ============================================================
+document.querySelector('nav a[data-section="home"]')?.classList.add('active');
+document.getElementById('home')?.classList.add('active');
+
+// Set default date to tomorrow
+const tomorrow = new Date();
+tomorrow.setDate(tomorrow.getDate() + 1);
+document.getElementById('startDate').value = tomorrow.toISOString().split('T')[0];
+
+// Initialize address fields
+updateAddressFields();
+// Initialize experience options
+updateExperienceOptions();
+
+console.log('✅ គេហទំព័របានដំណើរការយ៉ាងពេញលេញ!');
+console.log(`📊 មានប្រវត្តិដាក់ពាក្យចំនួន ${applicationHistory.length} ប្រវត្តិ`);
   </script>
 
 </body>
