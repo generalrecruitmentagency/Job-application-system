@@ -7,7 +7,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
-    /* ===== CSS VARIABLES & RESET ===== */
+    /* ============================================================
+       CSS VARIABLES & RESET
+    ============================================================ */
     :root {
       --primary: #0F172A;
       --primary-light: #1E293B;
@@ -51,13 +53,17 @@
       min-height: 100vh;
     }
 
-    /* ===== SCROLLBAR ===== */
+    /* ============================================================
+       SCROLLBAR
+    ============================================================ */
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: var(--bg-light); }
     ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
     ::-webkit-scrollbar-thumb:hover { background: var(--accent-hover); }
 
-    /* ===== CUSTOM ALERT ===== */
+    /* ============================================================
+       CUSTOM ALERT
+    ============================================================ */
     .custom-alert {
       display: none;
       position: fixed;
@@ -91,7 +97,9 @@
     .custom-alert .alert-close { float: right; background: none; border: none; font-size: 22px; cursor: pointer; color: inherit; opacity: 0.6; padding: 0 0 0 12px; transition: opacity var(--transition); }
     .custom-alert .alert-close:hover { opacity: 1; }
 
-    /* ===== HEADER ===== */
+    /* ============================================================
+       HEADER
+    ============================================================ */
     header { 
       background: linear-gradient(135deg, #0F172A 0%, #1E3A8A 50%, #1E40AF 100%); 
       color: white; 
@@ -136,7 +144,9 @@
     header h1 i { color: #60A5FA; margin-right: 10px; }
     header p { color: #93C5FD; font-size: 16px; position: relative; max-width: 600px; margin: 0 auto; }
 
-    /* ===== NAVIGATION ===== */
+    /* ============================================================
+       NAVIGATION
+    ============================================================ */
     nav { 
       background: var(--primary-light); 
       padding: 14px 24px; 
@@ -189,7 +199,9 @@
     .nav-btn-history { background: var(--success); color: white; }
     .nav-btn-history:hover { background: #16A34A; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3); }
 
-    /* ===== SECTIONS ===== */
+    /* ============================================================
+       SECTIONS
+    ============================================================ */
     section { 
       max-width: 920px;
       margin: 30px auto;
@@ -222,7 +234,9 @@
 
     section h2 i { color: var(--accent); }
 
-    /* ===== SOCIAL BUTTONS ===== */
+    /* ============================================================
+       SOCIAL BUTTONS
+    ============================================================ */
     .social-section {
       margin-top: 40px;
       padding-top: 30px;
@@ -258,7 +272,9 @@
     .social-btn.tiktok { background: var(--tiktok); }
     .social-btn.telegram { background: var(--telegram); }
 
-    /* ===== FORM ===== */
+    /* ============================================================
+       FORM
+    ============================================================ */
     form { max-width: 650px; margin: auto; }
 
     .form-group { margin-bottom: 22px; }
@@ -333,7 +349,9 @@
       background: transparent;
     }
 
-    /* ===== ADDRESS GRID ===== */
+    /* ============================================================
+       ADDRESS GRID
+    ============================================================ */
     .address-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -342,7 +360,9 @@
 
     .address-grid .full-width { grid-column: 1 / -1; }
 
-    /* ===== SELECTED JOB INFO ===== */
+    /* ============================================================
+       SELECTED JOB INFO
+    ============================================================ */
     .selected-job-info {
       background: var(--info-bg);
       border: 2px solid var(--accent);
@@ -359,7 +379,9 @@
     .selected-job-info.show { display: block; }
     .selected-job-info i { color: var(--accent); margin-right: 10px; }
 
-    /* ===== FORM BUTTONS ===== */
+    /* ============================================================
+       FORM BUTTONS
+    ============================================================ */
     .form-buttons {
       display: flex;
       gap: 14px;
@@ -395,7 +417,9 @@
     }
     .btn-back:hover { background: #E2E8F0; }
 
-    /* ===== SUCCESS MESSAGE - FIXED ===== */
+    /* ============================================================
+       SUCCESS MESSAGE - WITH OK BUTTON
+    ============================================================ */
     #successMessage {
       display: none;
       background: var(--success-bg);
@@ -435,7 +459,36 @@
       color: #15803D;
     }
 
-    /* ===== RULES ===== */
+    #successMessage .btn-ok {
+      margin-top: 18px;
+      padding: 10px 40px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition);
+      font-family: 'Kantumruy Pro', sans-serif;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #successMessage .btn-ok:hover {
+      background: var(--accent-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    }
+
+    #successMessage .btn-ok:active {
+      transform: scale(0.97);
+    }
+
+    /* ============================================================
+       RULES
+    ============================================================ */
     .rules-list {
       list-style: none;
       padding: 0;
@@ -478,7 +531,9 @@
       border-left: 4px solid var(--accent);
     }
 
-    /* ===== HISTORY MODAL ===== */
+    /* ============================================================
+       HISTORY MODAL
+    ============================================================ */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -568,7 +623,9 @@
 
     .history-empty i { font-size: 56px; color: #CBD5E1; display: block; margin-bottom: 16px; }
 
-    /* ===== FOOTER ===== */
+    /* ============================================================
+       FOOTER
+    ============================================================ */
     footer { 
       background: var(--primary); 
       color: #94A3B8; 
@@ -579,7 +636,9 @@
       border-top: 1px solid rgba(255,255,255,0.05);
     }
 
-    /* ===== RESPONSIVE ===== */
+    /* ============================================================
+       RESPONSIVE
+    ============================================================ */
     @media (max-width: 768px) {
       header h1 { font-size: 24px; }
       header { padding: 35px 16px 28px; }
@@ -623,7 +682,9 @@
       input, textarea, select { padding: 10px 14px; font-size: 13px; }
     }
 
-    /* ===== NUMBER INPUT ===== */
+    /* ============================================================
+       NUMBER INPUT
+    ============================================================ */
     input[type="number"] {
       -moz-appearance: textfield;
       appearance: textfield;
@@ -648,14 +709,18 @@
 </head>
 <body>
 
-  <!-- ===== CUSTOM ALERT ===== -->
+  <!-- ============================================================
+       CUSTOM ALERT
+  ============================================================ -->
   <div id="customAlert" class="custom-alert">
     <button class="alert-close" onclick="closeAlert()">&times;</button>
     <span class="alert-icon" id="alertIcon">✅</span>
     <span id="alertMessage">សារជូនដំណឹង</span>
   </div>
 
-  <!-- ===== HISTORY MODAL ===== -->
+  <!-- ============================================================
+       HISTORY MODAL
+  ============================================================ -->
   <div id="historyModal" class="modal-overlay">
     <div class="modal-content">
       <button class="modal-close" onclick="closeHistory()">&times;</button>
@@ -669,13 +734,17 @@
     </div>
   </div>
 
-  <!-- ===== HEADER ===== -->
+  <!-- ============================================================
+       HEADER
+  ============================================================ -->
   <header>
     <h1><i class="fas fa-briefcase"></i> ភ្នាក់ងារជ្រើសរើសបុគ្គលិកទូទៅ</h1>
     <p>ស្វែងរកការងារសមរម្យ និងដាក់ពាក្យធ្វើការបានយ៉ាងងាយស្រួល</p>
   </header>
 
-  <!-- ===== NAVIGATION ===== -->
+  <!-- ============================================================
+       NAVIGATION
+  ============================================================ -->
   <nav>
     <a href="#" class="active" data-section="home"><i class="fas fa-home"></i> ទំព័រដើម</a>
     <a href="#" data-section="rules"><i class="fas fa-list-ul"></i> ច្បាប់និងរបៀបប្រើប្រាស</a>
@@ -683,7 +752,9 @@
     <button class="nav-btn" onclick="copyWebsiteLink()"><i class="fas fa-share-alt"></i> ចែករំលែក</button>
   </nav>
 
-  <!-- ===== HOME SECTION ===== -->
+  <!-- ============================================================
+       HOME SECTION
+  ============================================================ -->
   <section id="home" class="active">
     <h2><i class="fas fa-pen-fancy"></i> បំពេញទម្រង់ដាក់ពាក្យ</h2>
     
@@ -897,12 +968,16 @@
       </div>
     </form>
     
-    <!-- ===== SUCCESS MESSAGE - FIXED ===== -->
+    <!-- ============================================================
+       SUCCESS MESSAGE - WITH OK BUTTON
+    ============================================================ -->
     <div id="successMessage">
       <!-- JavaScript will fill this -->
     </div>
 
-    <!-- ===== SOCIAL MEDIA ===== -->
+    <!-- ============================================================
+       SOCIAL MEDIA
+    ============================================================ -->
     <div class="social-section">
       <h3><i class="fas fa-share-alt"></i> តាមដានយើងតាមរយៈ</h3>
       <div class="social-buttons">
@@ -919,7 +994,9 @@
     </div>
   </section>
 
-  <!-- ===== RULES SECTION ===== -->
+  <!-- ============================================================
+       RULES SECTION
+  ============================================================ -->
   <section id="rules">
     <h2><i class="fas fa-list-ul"></i> ច្បាប់និងរបៀបប្រើប្រាស</h2>
     <ul class="rules-list">
@@ -961,12 +1038,16 @@
     </ul>
   </section>
 
-  <!-- ===== FOOTER ===== -->
+  <!-- ============================================================
+       FOOTER
+  ============================================================ -->
   <footer>
     <p>&copy; 2026 ភ្នាក់ងារជ្រើសរើសបុគ្គលិកទូទៅ</p>
   </footer>
 
-  <!-- ===== JAVASCRIPT ===== -->
+  <!-- ============================================================
+       JAVASCRIPT
+  ============================================================ -->
   <script>
     let isSubmitting = false;
     let applicationHistory = JSON.parse(localStorage.getItem('applicationHistory')) || [];
@@ -1329,6 +1410,31 @@
     }
 
     // ============================================================
+    // CLOSE SUCCESS MESSAGE
+    // ============================================================
+    function closeSuccessMessage() {
+      clearTimeout(window.successTimeout);
+      document.getElementById('successMessage').style.display = 'none';
+      document.getElementById('selectedJobInfo').classList.remove('show');
+      document.getElementById('otherEducation').value = '';
+      document.getElementById('otherJob').value = '';
+      document.getElementById('districtOtherContainer').style.display = 'none';
+      document.getElementById('communeOtherContainer').style.display = 'none';
+      document.getElementById('districtOther').value = '';
+      document.getElementById('communeOther').value = '';
+      
+      // Reset form
+      document.getElementById('jobForm').reset();
+      
+      // Reset submit button
+      resetSubmitButton();
+      
+      // Update address and experience fields
+      updateAddressFields();
+      updateExperienceOptions();
+    }
+
+    // ============================================================
     // FORM SUBMISSION
     // ============================================================
     document.getElementById("jobForm").addEventListener("submit", function(e) {
@@ -1449,7 +1555,7 @@
     });
 
     // ============================================================
-    // SEND PHOTO WITH CAPTION - FIXED SUCCESS MESSAGE
+    // SEND PHOTO WITH CAPTION - WITH OK BUTTON & 10 SECONDS
     // ============================================================
     function sendPhotoWithCaption(fileBase64, fileName, caption) {
       const token = '8133960195:AAGss5J-d0GXsFkfsOa3yjQ7p3yp9W5uCFs';
@@ -1484,7 +1590,7 @@
         .then(data => {
           if (data.ok) {
             // ==========================================================
-            // FIXED: បង្ហាញ Success Message ដូចដែលអ្នកចង់បាន
+            // SUCCESS MESSAGE WITH OK BUTTON
             // ==========================================================
             const successMsg = document.getElementById('successMessage');
             successMsg.innerHTML = `
@@ -1492,25 +1598,22 @@
               <div class="msg-title">✅ ការដាក់ពាក្យរបស់អ្នកត្រូវបានផ្ញើដោយជោគជ័យ!</div>
               <div class="msg-body">សូមរង់ចាំភ្នាក់ងាររបស់យើងទាក់ទងអ្នកតាមរយៈ Telegram ជាមួយនឹងការជូនដំណឹងដល់អ្នក។</div>
               <div class="msg-footer">🙏 សូមអរគុណសម្រាប់ការដាក់ពាក្យ!</div>
+              <button class="btn-ok" onclick="closeSuccessMessage()">
+                <i class="fas fa-check"></i> យល់ព្រម
+              </button>
             `;
             successMsg.style.display = 'block';
             
             showAlert('✅ ការដាក់ពាក្យរបស់អ្នកត្រូវបានផ្ញើដោយជោគជ័យ!', 'success');
             
-            setTimeout(() => {
-              document.getElementById('jobForm').reset();
-              document.getElementById('successMessage').style.display = 'none';
-              document.getElementById('selectedJobInfo').classList.remove('show');
-              document.getElementById('otherEducation').value = '';
-              document.getElementById('otherJob').value = '';
-              document.getElementById('districtOtherContainer').style.display = 'none';
-              document.getElementById('communeOtherContainer').style.display = 'none';
-              document.getElementById('districtOther').value = '';
-              document.getElementById('communeOther').value = '';
-              resetSubmitButton();
-              updateAddressFields();
-              updateExperienceOptions();
-            }, 5000);
+            // ==========================================================
+            // AUTO CLOSE AFTER 10 SECONDS
+            // ==========================================================
+            clearTimeout(window.successTimeout);
+            window.successTimeout = setTimeout(() => {
+              closeSuccessMessage();
+            }, 10000); // 10 seconds
+            
           } else {
             showAlert('❌ មានបញ្ហាក្នុងការផ្ញើព័ត៌មាន។', 'error');
             resetSubmitButton();
